@@ -12,11 +12,16 @@
 
     <style>
         :root {
-            --card-bg: rgba(20, 20, 20, 0.65);
-            --text-main: #ffffff;
-            --text-muted: #e0e0e0;
-            --accent: #e5c188;
-            --accent-hover: #d4a96a;
+            /* Moody Autumn Color Palette */
+            --bg-overlay-1: rgba(28, 18, 22, 0.75); /* Deep Burgundy Tint */
+            --bg-overlay-2: rgba(18, 14, 13, 0.85); /* Dark Espresso/Charcoal Tint */
+            --card-bg: rgba(32, 24, 25, 0.75);       /* Dark Glass Card Base */
+            --text-main: #f4efe6;                      /* Warm Soft Cream */
+            --text-muted: #d1c7bc;                    /* Muted Sand */
+            --accent: #d97736;                        /* Warm Burnt Orange / Terracotta */
+            --accent-hover: #b85d20;                  /* Deep Rust */
+            --accent-glow: rgba(217, 119, 54, 0.35);  /* Autumn Glow */
+            --border-light: rgba(217, 119, 54, 0.2);  /* Subtle Warm Border */
             --font-heading: 'Cormorant Garamond', serif;
             --font-body: 'Montserrat', sans-serif;
         }
@@ -28,7 +33,7 @@
         }
 
         body {
-            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)), 
+            background: linear-gradient(var(--bg-overlay-1), var(--bg-overlay-2)), 
                         url('https://htijohnson.github.io/wedding/gj.png') no-repeat center center fixed;
             background-size: cover;
             color: var(--text-main);
@@ -56,7 +61,7 @@
             background-color: var(--card-bg);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--border-light);
             color: var(--accent);
             padding: 8px 16px;
             border-radius: 20px;
@@ -66,18 +71,18 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
 
         .audio-control-btn:hover {
             background-color: var(--accent);
-            color: #111;
+            color: #1a0f0a;
         }
 
         header {
             margin-top: 40px;
             margin-bottom: 30px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
         }
 
         .sub-title {
@@ -93,7 +98,7 @@
             font-family: var(--font-heading);
             font-size: 3.8rem;
             font-weight: 400;
-            color: #ffffff;
+            color: var(--text-main);
             letter-spacing: 1px;
             line-height: 1.2;
         }
@@ -128,8 +133,8 @@
 
         .gallery-link-btn:hover {
             background-color: var(--accent);
-            color: #111;
-            box-shadow: 0 0 12px rgba(229, 193, 136, 0.4);
+            color: #1a0f0a;
+            box-shadow: 0 0 16px var(--accent-glow);
         }
 
         .divider {
@@ -138,7 +143,7 @@
             background-color: var(--accent);
             margin: 30px auto 40px auto;
             opacity: 0.8;
-            box-shadow: 0 0 8px rgba(229, 193, 136, 0.5);
+            box-shadow: 0 0 10px var(--accent-glow);
         }
 
         .details-grid {
@@ -150,12 +155,12 @@
 
         .card {
             background-color: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             padding: 30px 20px;
             border-radius: 12px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-light);
         }
 
         .card h3 {
@@ -173,12 +178,12 @@
 
         .rsvp-section {
             background-color: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             padding: 40px 30px;
             border-radius: 12px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-light);
             margin-bottom: 50px;
             transition: all 0.4s ease;
         }
@@ -188,7 +193,7 @@
             font-size: 2.4rem;
             margin-bottom: 10px;
             font-weight: 400;
-            color: #ffffff;
+            color: var(--text-main);
         }
 
         .rsvp-section p {
@@ -215,9 +220,9 @@
         input, select {
             width: 100%;
             padding: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            background-color: rgba(255, 255, 255, 0.9);
-            color: #222;
+            border: 1px solid rgba(217, 119, 54, 0.3);
+            background-color: rgba(28, 22, 23, 0.85);
+            color: var(--text-main);
             border-radius: 6px;
             font-family: var(--font-body);
             font-size: 0.95rem;
@@ -227,13 +232,18 @@
 
         input:focus, select:focus {
             border-color: var(--accent);
-            box-shadow: 0 0 8px rgba(229, 193, 136, 0.5);
-            background-color: #ffffff;
+            box-shadow: 0 0 10px var(--accent-glow);
+            background-color: rgba(38, 30, 31, 0.95);
+        }
+
+        select option {
+            background-color: #201819;
+            color: var(--text-main);
         }
 
         button.btn {
             background-color: var(--accent);
-            color: #111111;
+            color: #1a0f0a;
             font-weight: 600;
             border: none;
             padding: 14px 35px;
@@ -250,6 +260,7 @@
 
         button.btn:hover {
             background-color: var(--accent-hover);
+            color: var(--text-main);
             transform: translateY(-1px);
         }
 
@@ -283,7 +294,7 @@
         .confirmation-details {
             margin-top: 20px;
             padding: 15px;
-            background-color: rgba(0, 0, 0, 0.3);
+            background-color: rgba(15, 10, 11, 0.5);
             border-radius: 8px;
             font-size: 0.95rem;
             color: var(--text-muted);
@@ -291,7 +302,7 @@
         }
 
         .confirmation-details strong {
-            color: #ffffff;
+            color: var(--text-main);
         }
 
         .photo-modal-overlay {
@@ -301,7 +312,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
+            background-color: rgba(12, 8, 9, 0.92);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             z-index: 2000;
@@ -315,11 +326,11 @@
             width: 90%;
             max-width: 1000px;
             height: 85vh;
-            background: #000;
+            background: #0d090a;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+            border: 1px solid var(--border-light);
         }
 
         .photo-modal-close {
@@ -336,7 +347,7 @@
         }
 
         .photo-modal-close:hover {
-            color: #ffffff;
+            color: var(--text-main);
         }
 
         .photo-iframe {
@@ -550,7 +561,7 @@
             })
             .catch(error => {
                 console.error('RSVP Error:', error);
-                statusMsg.style.color = '#ff6b6b';
+                statusMsg.style.color = '#e25555';
                 statusMsg.innerText = 'Unable to send RSVP. Please check your connection and try again.';
                 submitBtn.disabled = false;
             });
