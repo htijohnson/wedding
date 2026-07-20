@@ -369,9 +369,9 @@
 </head>
 <body>
 
-    <!-- Updated Audio Source to HTTPS -->
+    <!-- Appended #t=190 to start at 3m10s (190 seconds) -->
     <audio id="bgMusic" loop preload="auto">
-        <source src="https://ginajustin.wedding/gj.mp3" type="audio/mpeg">
+        <source src="https://ginajustin.wedding/gj.mp3#t=190" type="audio/mpeg">
     </audio>
 
     <button class="audio-control-btn" id="audioToggleBtn">🎵 Play Music</button>
@@ -461,21 +461,30 @@
         const audioToggleBtn = document.getElementById('audioToggleBtn');
         let isAudioPlaying = false;
 
+        // Function to start playback specifically at 190s (3m 10s)
+        function playAudioAtStartPoint() {
+            if (bgMusic.currentTime < 190) {
+                bgMusic.currentTime = 190;
+            }
+            return bgMusic.play();
+        }
+
         audioToggleBtn.addEventListener('click', function() {
             if (isAudioPlaying) {
                 bgMusic.pause();
                 audioToggleBtn.innerText = '🎵 Play Music';
                 isAudioPlaying = false;
             } else {
-                bgMusic.play();
-                audioToggleBtn.innerText = '🔊 Pause Music';
-                isAudioPlaying = true;
+                playAudioAtStartPoint().then(() => {
+                    audioToggleBtn.innerText = '🔊 Pause Music';
+                    isAudioPlaying = true;
+                });
             }
         });
 
         document.body.addEventListener('click', function initAudioOnFirstTouch() {
             if (!isAudioPlaying) {
-                bgMusic.play().then(() => {
+                playAudioAtStartPoint().then(() => {
                     isAudioPlaying = true;
                     audioToggleBtn.innerText = '🔊 Pause Music';
                 }).catch(() => {});
@@ -483,14 +492,13 @@
         }, { once: true });
 
 
-        // --- 2. Photo Modal (Updated Relative Path) ---
+        // --- 2. Photo Modal ---
         const openGalleryBtn = document.getElementById('openGalleryBtn');
         const closeGalleryBtn = document.getElementById('closeGalleryBtn');
         const photoModal = document.getElementById('photoModal');
         const photoIframe = document.getElementById('photoIframe');
         
-        // Relative URL prevents mixed content/cross-origin blocks
-        const GALLERY_URL = 'http://ginajustin.wedding/photos/photos.html';
+        const GALLERY_URL = 'https://ginajustin.wedding/photos/photos.html';
 
         openGalleryBtn.addEventListener('click', function() {
             photoIframe.src = GALLERY_URL;
