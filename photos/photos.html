@@ -167,6 +167,25 @@
             border-color: var(--accent);
         }
 
+        footer {
+            margin-top: auto;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--accent-hover);
+            text-decoration: underline;
+        }
+
         @media (max-width: 600px) {
             .slideshow-wrapper { height: 50vh; }
             .nav-btn { padding: 6px 12px; font-size: 1.4rem; }
@@ -177,7 +196,7 @@
 <body>
 
     <header>
-        <h1>Our Memories</h1>
+        <h1>Our Engagement</h1>
         <div class="controls">
             <button class="btn active" id="slideshowViewBtn">Slideshow</button>
             <button class="btn" id="gridViewBtn">Grid View</button>
@@ -193,6 +212,10 @@
     </div>
 
     <div class="grid-wrapper" id="gridContainer"></div>
+
+    <footer>
+        <p>Special thanks to <a href="https://www.beesplusmulberryphotography.com/" target="_blank" rel="noopener noreferrer">Bees Plus Mulberry Photography</a> for these beautiful photos.</p>
+    </footer>
 
     <script>
         const BASE_URL = 'https://ginajustin.wedding/photos/';
