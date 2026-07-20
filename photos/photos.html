@@ -269,9 +269,10 @@
             return num.toString().padStart(2, '0');
         }
 
-        // Build array of image filenames (01.jpg through 81.jpg)
+        // Build array of image filenames with support for .gif on 79 & 80
         function getPhotoUrl(index) {
-            return `${BASE_URL}${formatNumber(index)}.jpg`;
+            const ext = (index === 79 || index === 80) ? 'gif' : 'jpg';
+            return `${BASE_URL}${formatNumber(index)}.${ext}`;
         }
 
         // Initialize Thumbnails Strip
