@@ -212,6 +212,15 @@
             text-align: left;
         }
 
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
         label {
             display: block;
             font-size: 0.8rem;
@@ -380,6 +389,7 @@
             h1 { font-size: 2.8rem; }
             .rsvp-section { padding: 25px 15px; }
             .photo-modal-content { width: 95%; height: 90vh; }
+            .form-row { flex-direction: column; gap: 0; }
         }
     </style>
 </head>
@@ -440,9 +450,16 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="guestCount">Total Number of Guests in Party</label>
-                        <input type="number" id="guestCount" name="guestCount" min="1" max="10" value="1" required>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="adultCount">Number of Adults</label>
+                            <input type="number" id="adultCount" name="adultCount" min="1" max="10" value="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="childCount">Children (Under 13)</label>
+                            <input type="number" id="childCount" name="childCount" min="0" max="10" value="0" required>
+                        </div>
                     </div>
 
                     <button type="submit" class="btn" id="submitBtn">Send RSVP</button>
@@ -456,13 +473,14 @@
                 <div class="confirmation-details">
                     <p><strong>Submitted For:</strong> <span id="confirmName"></span></p>
                     <p><strong>Status:</strong> <span id="confirmStatus"></span></p>
-                    <p><strong>Party Size:</strong> <span id="confirmCount"></span></p>
+                    <p><strong>Adults:</strong> <span id="confirmAdults"></span></p>
+                    <p><strong>Children (&lt;13):</strong> <span id="confirmChildren"></span></p>
                 </div>
             </div>
         </div>
 
         <footer>
-            <p>We can'wait to celebrate with you!</p>
+            <p>We can't wait to celebrate with you!</p>
         </footer>
     </div>
 
@@ -479,7 +497,6 @@
         const audioToggleBtn = document.getElementById('audioToggleBtn');
         let isAudioPlaying = false;
 
-        // Function to start playback specifically at 190s (3m 10s)
         function playAudioAtStartPoint() {
             if (bgMusic.currentTime < 190) {
                 bgMusic.currentTime = 190;
@@ -556,7 +573,8 @@
             const formData = new FormData(form);
             const fullNameVal = document.getElementById('fullname').value;
             const attendanceVal = document.getElementById('attendance').value;
-            const guestCountVal = document.getElementById('guestCount').value;
+            const adultCountVal = document.getElementById('adultCount').value;
+            const childCountVal = document.getElementById('childCount').value;
 
             fetch(GOOGLE_SHEET_URL, {
                 method: 'POST',
@@ -564,7 +582,7 @@
                 mode: 'no-cors'
             })
             .then(() => {
-                showConfirmation(fullNameVal, attendanceVal, guestCountVal);
+                showConfirmation(fullNameVal, attendanceVal, adultCountVal, childCountVal);
             })
             .catch(error => {
                 console.error('RSVP Error:', error);
@@ -574,10 +592,11 @@
             });
         });
 
-        function showConfirmation(name, status, count) {
+        function showConfirmation(name, status, adults, children) {
             document.getElementById('confirmName').innerText = name;
             document.getElementById('confirmStatus').innerText = status;
-            document.getElementById('confirmCount').innerText = count + (count == 1 ? ' Person' : ' People');
+            document.getElementById('confirmAdults').innerText = adults;
+            document.getElementById('confirmChildren').innerText = children;
 
             formContainer.style.display = 'none';
             confirmationBox.style.display = 'block';
