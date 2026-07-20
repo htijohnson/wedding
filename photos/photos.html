@@ -40,7 +40,6 @@
             overflow-x: hidden;
         }
 
-        /* Header Controls */
         header {
             text-align: center;
             margin-bottom: 20px;
@@ -81,7 +80,6 @@
             color: #111;
         }
 
-        /* Slideshow Container */
         .slideshow-wrapper {
             position: relative;
             width: 100%;
@@ -110,7 +108,6 @@
             opacity: 1;
         }
 
-        /* Nav Arrows */
         .nav-btn {
             position: absolute;
             top: 50%;
@@ -146,7 +143,6 @@
             letter-spacing: 1px;
         }
 
-        /* Grid View (Hidden by default) */
         .grid-wrapper {
             display: none;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -189,33 +185,23 @@
         </div>
     </header>
 
-    <!-- Slideshow View -->
     <div class="slideshow-wrapper" id="slideshowContainer">
         <button class="nav-btn prev" id="prevBtn">&#10094;</button>
         <img src="" id="currentSlide" class="slide-img active" alt="Gallery Photo">
         <button class="nav-btn next" id="nextBtn">&#10095;</button>
-        <div class="counter" id="slideCounter">1 / 1</div>
+        <div class="counter" id="slideCounter">1 / 81</div>
     </div>
 
-    <!-- Grid View -->
     <div class="grid-wrapper" id="gridContainer"></div>
 
     <script>
-        // List your photo file names here (matching your photos directory)
-        const photoFiles = [
-            '1.jpg',
-            '2.jpg',
-            '3.jpg',
-            '4.jpg',
-            '5.jpg',
-            '6.jpg'
-        ];
+        // Automatically generate paths for 81 photos (1.jpg to 81.jpg)
+        const photoFiles = Array.from({ length: 81 }, (_, i) => `${i + 1}.jpg`);
 
         let currentIndex = 0;
         let autoplayInterval = null;
         let isAutoplay = true;
 
-        // Elements
         const currentSlide = document.getElementById('currentSlide');
         const slideCounter = document.getElementById('slideCounter');
         const slideshowContainer = document.getElementById('slideshowContainer');
@@ -231,6 +217,7 @@
             const img = document.createElement('img');
             img.src = file;
             img.alt = `Photo ${idx + 1}`;
+            img.loading = "lazy"; // Prevents lag loading all 81 images at once
             img.addEventListener('click', () => {
                 showSlide(idx);
                 switchToSlideshow();
@@ -247,7 +234,6 @@
                 currentIndex = index;
             }
 
-            // Crossfade transition
             currentSlide.classList.remove('active');
             setTimeout(() => {
                 currentSlide.src = photoFiles[currentIndex];
@@ -256,17 +242,12 @@
             }, 150);
         }
 
-        function nextSlide() {
-            showSlide(currentIndex + 1);
-        }
-
-        function prevSlide() {
-            showSlide(currentIndex - 1);
-        }
+        function nextSlide() { showSlide(currentIndex + 1); }
+        function prevSlide() { showSlide(currentIndex - 1); }
 
         function startAutoplay() {
             if (!autoplayInterval) {
-                autoplayInterval = setInterval(nextSlide, 3500); // 3.5 sec per slide
+                autoplayInterval = setInterval(nextSlide, 3500);
                 autoplayBtn.innerText = 'Pause Autoplay';
                 isAutoplay = true;
             }
@@ -293,16 +274,12 @@
             slideshowViewBtn.classList.remove('active');
         }
 
-        // Event Listeners
         nextBtn.addEventListener('click', () => { nextSlide(); if (isAutoplay) startAutoplay(); });
         prevBtn.addEventListener('click', () => { prevSlide(); if (isAutoplay) startAutoplay(); });
 
         autoplayBtn.addEventListener('click', () => {
-            if (isAutoplay) {
-                stopAutoplay();
-            } else {
-                startAutoplay();
-            }
+            if (isAutoplay) stopAutoplay();
+            else startAutoplay();
         });
 
         slideshowViewBtn.addEventListener('click', switchToSlideshow);
