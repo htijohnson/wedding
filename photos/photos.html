@@ -12,12 +12,15 @@
 
     <style>
         :root {
-            --bg-dark: #0f0f0f;
-            --card-bg: rgba(25, 25, 25, 0.75);
-            --accent: #e5c188;
-            --accent-hover: #d4a96a;
-            --text-main: #ffffff;
-            --text-muted: #cccccc;
+            /* Moody Autumn Color Palette */
+            --bg-dark: #0d090a;                       /* Deep Charcoal / Espresso Base */
+            --card-bg: rgba(32, 24, 25, 0.85);        /* Dark Burgundy Glass Card */
+            --accent: #d97736;                         /* Warm Burnt Orange / Terracotta */
+            --accent-hover: #b85d20;                   /* Deep Rust */
+            --accent-glow: rgba(217, 119, 54, 0.35);   /* Autumn Glow */
+            --border-light: rgba(217, 119, 54, 0.25);   /* Warm Tinted Border */
+            --text-main: #f4efe6;                       /* Warm Soft Cream */
+            --text-muted: #d1c7bc;                     /* Muted Sand */
             --font-heading: 'Cormorant Garamond', serif;
             --font-body: 'Montserrat', sans-serif;
         }
@@ -30,6 +33,7 @@
 
         body {
             background-color: var(--bg-dark);
+            background: radial-gradient(circle at top, #1c1216 0%, var(--bg-dark) 80%);
             color: var(--text-main);
             font-family: var(--font-body);
             min-height: 100vh;
@@ -51,6 +55,7 @@
             color: var(--accent);
             letter-spacing: 1px;
             font-weight: 400;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
         }
 
         .controls {
@@ -77,7 +82,8 @@
 
         .btn:hover, .btn.active {
             background: var(--accent);
-            color: #111;
+            color: #1a0f0a;
+            box-shadow: 0 0 12px var(--accent-glow);
         }
 
         .slideshow-wrapper {
@@ -88,11 +94,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: #000;
+            background: #050304;
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 25, 0.15);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
         }
 
         .slide-img {
@@ -112,9 +118,9 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(13, 9, 10, 0.7);
             color: var(--accent);
-            border: 1px solid rgba(229, 193, 136, 0.4);
+            border: 1px solid var(--border-light);
             font-size: 1.8rem;
             padding: 10px 16px;
             cursor: pointer;
@@ -126,7 +132,8 @@
 
         .nav-btn:hover {
             background: var(--accent);
-            color: #000;
+            color: #1a0f0a;
+            box-shadow: 0 0 12px var(--accent-glow);
         }
 
         .prev { left: 15px; }
@@ -135,7 +142,8 @@
         .counter {
             position: absolute;
             bottom: 12px;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(13, 9, 10, 0.8);
+            border: 1px solid var(--border-light);
             padding: 4px 12px;
             border-radius: 12px;
             font-size: 0.8rem;
@@ -157,14 +165,15 @@
             height: 180px;
             object-fit: cover;
             border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--border-light);
             cursor: pointer;
-            transition: transform 0.3s ease, border-color 0.3s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .grid-wrapper img:hover {
             transform: scale(1.03);
             border-color: var(--accent);
+            box-shadow: 0 0 12px var(--accent-glow);
         }
 
         footer {
