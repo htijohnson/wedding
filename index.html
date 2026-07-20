@@ -12,10 +12,10 @@
 
     <style>
         :root {
-            --card-bg: rgba(20, 20, 20, 0.65); /* Frosted glass dark background */
+            --card-bg: rgba(20, 20, 20, 0.65);
             --text-main: #ffffff;
             --text-muted: #e0e0e0;
-            --accent: #e5c188; /* Warm gold */
+            --accent: #e5c188;
             --accent-hover: #d4a96a;
             --font-heading: 'Cormorant Garamond', serif;
             --font-body: 'Montserrat', sans-serif;
@@ -28,7 +28,6 @@
         }
 
         body {
-            /* Full page background image with dark overlay */
             background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)), 
                         url('https://htijohnson.github.io/wedding/gj.png') no-repeat center center fixed;
             background-size: cover;
@@ -49,7 +48,6 @@
             text-align: center;
         }
 
-        /* Audio Control Button (Floating Top Right) */
         .audio-control-btn {
             position: fixed;
             top: 20px;
@@ -76,7 +74,6 @@
             color: #111;
         }
 
-        /* Header Section */
         header {
             margin-top: 40px;
             margin-bottom: 30px;
@@ -144,7 +141,6 @@
             box-shadow: 0 0 8px rgba(229, 193, 136, 0.5);
         }
 
-        /* Details Grid */
         .details-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -175,7 +171,6 @@
             color: var(--text-muted);
         }
 
-        /* RSVP Form & Confirmation Card */
         .rsvp-section {
             background-color: var(--card-bg);
             backdrop-filter: blur(10px);
@@ -265,7 +260,6 @@
             display: none;
         }
 
-        /* Confirmation State Styles */
         .confirmation-box {
             display: none;
             padding: 20px 10px;
@@ -300,7 +294,6 @@
             color: #ffffff;
         }
 
-        /* In-Page Photo Modal Container */
         .photo-modal-overlay {
             display: none;
             position: fixed;
@@ -376,22 +369,19 @@
 </head>
 <body>
 
-    <!-- Background Music Audio Tag -->
+    <!-- Updated Audio Source to HTTPS -->
     <audio id="bgMusic" loop preload="auto">
-        <source src="http://ginajustin.wedding/gj.mp3" type="audio/mpeg">
+        <source src="https://ginajustin.wedding/gj.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Audio Toggle Button -->
     <button class="audio-control-btn" id="audioToggleBtn">🎵 Play Music</button>
 
     <div class="container">
-        <!-- Main Header -->
         <header>
             <p class="sub-title">We are getting married</p>
             <h1>Gina & Justin</h1>
             <p class="date-location">October 10, 2026</p>
             
-            <!-- In-Page Gallery Link Button -->
             <div class="gallery-btn-wrapper">
                 <button class="gallery-link-btn" id="openGalleryBtn">📷 View Photo Gallery</button>
             </div>
@@ -399,7 +389,6 @@
 
         <div class="divider"></div>
 
-        <!-- Details Grid -->
         <div class="details-grid">
             <div class="card">
                 <h3>Schedule</h3>
@@ -413,7 +402,6 @@
             </div>
         </div>
 
-        <!-- RSVP Form Section -->
         <div class="rsvp-section" id="rsvpSection">
             <div id="rsvpFormContainer">
                 <h2>RSVP</h2>
@@ -444,7 +432,6 @@
                 </form>
             </div>
 
-            <!-- Confirmation Message (Hidden by default) -->
             <div id="confirmationBox" class="confirmation-box">
                 <h3>RSVP Received!</h3>
                 <p>Thank you so much for taking the time to respond.</p>
@@ -456,13 +443,11 @@
             </div>
         </div>
 
-        <!-- Footer -->
         <footer>
             <p>We can't wait to celebrate with you!</p>
         </footer>
     </div>
 
-    <!-- Photo Gallery Overlay Modal -->
     <div class="photo-modal-overlay" id="photoModal">
         <div class="photo-modal-content">
             <span class="photo-modal-close" id="closeGalleryBtn">&times;</span>
@@ -471,7 +456,7 @@
     </div>
 
     <script>
-        // --- 1. Background Music Logic ---
+        // --- 1. Audio Control ---
         const bgMusic = document.getElementById('bgMusic');
         const audioToggleBtn = document.getElementById('audioToggleBtn');
         let isAudioPlaying = false;
@@ -488,25 +473,24 @@
             }
         });
 
-        // Attempt autoplay on first user interaction anywhere on page
         document.body.addEventListener('click', function initAudioOnFirstTouch() {
             if (!isAudioPlaying) {
                 bgMusic.play().then(() => {
                     isAudioPlaying = true;
                     audioToggleBtn.innerText = '🔊 Pause Music';
-                }).catch(() => {
-                    // Autoplay prevented by browser, fallback to button click
-                });
+                }).catch(() => {});
             }
         }, { once: true });
 
 
-        // --- 2. In-Page Photo Gallery Modal Logic ---
+        // --- 2. Photo Modal (Updated Relative Path) ---
         const openGalleryBtn = document.getElementById('openGalleryBtn');
         const closeGalleryBtn = document.getElementById('closeGalleryBtn');
         const photoModal = document.getElementById('photoModal');
         const photoIframe = document.getElementById('photoIframe');
-        const GALLERY_URL = 'http://ginajustin.wedding/photos/photos.html';
+        
+        // Relative URL prevents mixed content/cross-origin blocks
+        const GALLERY_URL = './photos/photos.html';
 
         openGalleryBtn.addEventListener('click', function() {
             photoIframe.src = GALLERY_URL;
@@ -515,10 +499,9 @@
 
         closeGalleryBtn.addEventListener('click', function() {
             photoModal.style.display = 'none';
-            photoIframe.src = ''; // Stop slideshow processing in background
+            photoIframe.src = '';
         });
 
-        // Close modal if user clicks background overlay
         photoModal.addEventListener('click', function(e) {
             if (e.target === photoModal) {
                 photoModal.style.display = 'none';
@@ -527,7 +510,7 @@
         });
 
 
-        // --- 3. Google Sheets RSVP Script Logic ---
+        // --- 3. RSVP Google Sheets Submission ---
         const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzic-I5h6K07tPJ3ZwyWbZ9pJD4JwOkWjvFGzAeiN-Juw6g02WomTCLV9-SHpRh/exec';
 
         const form = document.getElementById('rsvpForm');
@@ -560,7 +543,7 @@
             .catch(error => {
                 console.error('RSVP Error:', error);
                 statusMsg.style.color = '#ff6b6b';
-                statusMsg.innerText = 'Unable to send RSVP. Please check your internet connection and try again.';
+                statusMsg.innerText = 'Unable to send RSVP. Please check your connection and try again.';
                 submitBtn.disabled = false;
             });
         });
@@ -574,6 +557,5 @@
             confirmationBox.style.display = 'block';
         }
     </script>
-
 </body>
 </html>
