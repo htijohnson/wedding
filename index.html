@@ -15,7 +15,7 @@
             --card-bg: rgba(20, 20, 20, 0.65); /* Frosted glass dark background */
             --text-main: #ffffff;
             --text-muted: #e0e0e0;
-            --accent: #e5c188; /* Warm gold for visibility against dark backgrounds */
+            --accent: #e5c188; /* Warm gold */
             --accent-hover: #d4a96a;
             --font-heading: 'Cormorant Garamond', serif;
             --font-body: 'Montserrat', sans-serif;
@@ -49,6 +49,33 @@
             text-align: center;
         }
 
+        /* Audio Control Button (Floating Top Right) */
+        .audio-control-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background-color: var(--card-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .audio-control-btn:hover {
+            background-color: var(--accent);
+            color: #111;
+        }
+
         /* Header Section */
         header {
             margin-top: 40px;
@@ -80,6 +107,32 @@
             font-style: italic;
             color: var(--text-muted);
             margin-top: 10px;
+        }
+
+        .gallery-btn-wrapper {
+            margin-top: 20px;
+        }
+
+        .gallery-link-btn {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-link-btn:hover {
+            background-color: var(--accent);
+            color: #111;
+            box-shadow: 0 0 12px rgba(229, 193, 136, 0.4);
         }
 
         .divider {
@@ -247,6 +300,58 @@
             color: #ffffff;
         }
 
+        /* In-Page Photo Modal Container */
+        .photo-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .photo-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            height: 85vh;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .photo-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: var(--accent);
+            font-size: 2.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+
+        .photo-modal-close:hover {
+            color: #ffffff;
+        }
+
+        .photo-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -265,10 +370,19 @@
         @media (max-width: 600px) {
             h1 { font-size: 2.8rem; }
             .rsvp-section { padding: 25px 15px; }
+            .photo-modal-content { width: 95%; height: 90vh; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Background Music Audio Tag -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="http://ginajustin.wedding/gj.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Audio Toggle Button -->
+    <button class="audio-control-btn" id="audioToggleBtn">🎵 Play Music</button>
 
     <div class="container">
         <!-- Main Header -->
@@ -276,6 +390,11 @@
             <p class="sub-title">We are getting married</p>
             <h1>Gina & Justin</h1>
             <p class="date-location">October 10, 2026</p>
+            
+            <!-- In-Page Gallery Link Button -->
+            <div class="gallery-btn-wrapper">
+                <button class="gallery-link-btn" id="openGalleryBtn">📷 View Photo Gallery</button>
+            </div>
         </header>
 
         <div class="divider"></div>
@@ -343,7 +462,72 @@
         </footer>
     </div>
 
+    <!-- Photo Gallery Overlay Modal -->
+    <div class="photo-modal-overlay" id="photoModal">
+        <div class="photo-modal-content">
+            <span class="photo-modal-close" id="closeGalleryBtn">&times;</span>
+            <iframe class="photo-iframe" id="photoIframe" src="" title="Photo Gallery"></iframe>
+        </div>
+    </div>
+
     <script>
+        // --- 1. Background Music Logic ---
+        const bgMusic = document.getElementById('bgMusic');
+        const audioToggleBtn = document.getElementById('audioToggleBtn');
+        let isAudioPlaying = false;
+
+        audioToggleBtn.addEventListener('click', function() {
+            if (isAudioPlaying) {
+                bgMusic.pause();
+                audioToggleBtn.innerText = '🎵 Play Music';
+                isAudioPlaying = false;
+            } else {
+                bgMusic.play();
+                audioToggleBtn.innerText = '🔊 Pause Music';
+                isAudioPlaying = true;
+            }
+        });
+
+        // Attempt autoplay on first user interaction anywhere on page
+        document.body.addEventListener('click', function initAudioOnFirstTouch() {
+            if (!isAudioPlaying) {
+                bgMusic.play().then(() => {
+                    isAudioPlaying = true;
+                    audioToggleBtn.innerText = '🔊 Pause Music';
+                }).catch(() => {
+                    // Autoplay prevented by browser, fallback to button click
+                });
+            }
+        }, { once: true });
+
+
+        // --- 2. In-Page Photo Gallery Modal Logic ---
+        const openGalleryBtn = document.getElementById('openGalleryBtn');
+        const closeGalleryBtn = document.getElementById('closeGalleryBtn');
+        const photoModal = document.getElementById('photoModal');
+        const photoIframe = document.getElementById('photoIframe');
+        const GALLERY_URL = 'http://ginajustin.wedding/photos/photos.html';
+
+        openGalleryBtn.addEventListener('click', function() {
+            photoIframe.src = GALLERY_URL;
+            photoModal.style.display = 'flex';
+        });
+
+        closeGalleryBtn.addEventListener('click', function() {
+            photoModal.style.display = 'none';
+            photoIframe.src = ''; // Stop slideshow processing in background
+        });
+
+        // Close modal if user clicks background overlay
+        photoModal.addEventListener('click', function(e) {
+            if (e.target === photoModal) {
+                photoModal.style.display = 'none';
+                photoIframe.src = '';
+            }
+        });
+
+
+        // --- 3. Google Sheets RSVP Script Logic ---
         const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzic-I5h6K07tPJ3ZwyWbZ9pJD4JwOkWjvFGzAeiN-Juw6g02WomTCLV9-SHpRh/exec';
 
         const form = document.getElementById('rsvpForm');
