@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gina & Justin — Photo Gallery</title>
 
-    <!-- Google Fonts for Typography -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --card-bg: rgba(20, 20, 20, 0.75); /* Frosted glass dark background */
-            --text-main: #ffffff;
-            --text-muted: #e0e0e0;
-            --accent: #e5c188; /* Warm gold */
+            --bg-dark: #0f0f0f;
+            --card-bg: rgba(25, 25, 25, 0.75);
+            --accent: #e5c188;
             --accent-hover: #d4a96a;
+            --text-main: #ffffff;
+            --text-muted: #cccccc;
             --font-heading: 'Cormorant Garamond', serif;
             --font-body: 'Montserrat', sans-serif;
         }
@@ -28,372 +29,288 @@
         }
 
         body {
-            /* Full page background image with dark overlay */
-            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)), 
-                        url('https://htijohnson.github.io/wedding/gj.png') no-repeat center center fixed;
-            background-size: cover;
+            background-color: var(--bg-dark);
             color: var(--text-main);
             font-family: var(--font-body);
-            line-height: 1.6;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            padding: 20px 10px;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 900px;
-            width: 100%;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        /* Navigation / Header */
+        /* Header Controls */
         header {
-            margin-top: 20px;
-            margin-bottom: 25px;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
-        }
-
-        .back-link {
-            display: inline-block;
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            transition: color 0.3s ease;
-        }
-
-        .back-link:hover {
-            color: var(--accent-hover);
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         h1 {
             font-family: var(--font-heading);
-            font-size: 3.2rem;
-            font-weight: 400;
-            color: #ffffff;
+            font-size: 2.2rem;
+            color: var(--accent);
             letter-spacing: 1px;
-            line-height: 1.2;
+            font-weight: 400;
         }
 
-        /* Slideshow Card Container */
-        .slideshow-card {
-            background-color: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            margin-bottom: 30px;
+        .controls {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 12px;
+            flex-wrap: wrap;
         }
 
-        /* Main Image Viewport */
-        .slideshow-viewport {
+        .btn {
+            background: var(--card-bg);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover, .btn.active {
+            background: var(--accent);
+            color: #111;
+        }
+
+        /* Slideshow Container */
+        .slideshow-wrapper {
             position: relative;
             width: 100%;
-            height: 520px;
+            max-width: 900px;
+            height: 65vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            background: #000;
+            border-radius: 12px;
             overflow: hidden;
-            border-radius: 8px;
-            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
         .slide-img {
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            border-radius: 4px;
             opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.6s ease-in-out;
             position: absolute;
         }
 
         .slide-img.active {
             opacity: 1;
-            position: relative;
         }
 
-        /* Controls Toolbar */
-        .controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .btn {
-            background-color: var(--accent);
-            color: #111111;
-            font-weight: 600;
-            border: none;
-            padding: 10px 22px;
-            font-family: var(--font-body);
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border-radius: 6px;
+        /* Nav Arrows */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--accent);
+            border: 1px solid rgba(229, 193, 136, 0.4);
+            font-size: 1.8rem;
+            padding: 10px 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.1s ease;
+            border-radius: 50%;
+            user-select: none;
+            transition: all 0.3s ease;
+            z-index: 10;
         }
 
-        .btn:hover {
-            background-color: var(--accent-hover);
-            transform: translateY(-1px);
+        .nav-btn:hover {
+            background: var(--accent);
+            color: #000;
         }
+
+        .prev { left: 15px; }
+        .next { right: 15px; }
 
         .counter {
-            font-family: var(--font-heading);
-            font-size: 1.2rem;
+            position: absolute;
+            bottom: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
             color: var(--text-muted);
-            min-width: 90px;
-            text-align: center;
+            letter-spacing: 1px;
         }
 
-        /* Thumbnail Navigation Strip */
-        .thumb-strip {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding: 15px 5px 5px 5px;
-            margin-top: 15px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent) transparent;
+        /* Grid View (Hidden by default) */
+        .grid-wrapper {
+            display: none;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 10px;
         }
 
-        .thumb-strip::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .thumb-strip::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 3px;
-        }
-
-        .thumb-img {
-            width: 65px;
-            height: 45px;
+        .grid-wrapper img {
+            width: 100%;
+            height: 180px;
             object-fit: cover;
-            border-radius: 4px;
-            opacity: 0.4;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-            flex-shrink: 0;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
-        .thumb-img:hover {
-            opacity: 0.8;
-        }
-
-        .thumb-img.active {
-            opacity: 1;
+        .grid-wrapper img:hover {
+            transform: scale(1.03);
             border-color: var(--accent);
-            box-shadow: 0 0 8px rgba(229, 193, 136, 0.6);
-        }
-
-        footer {
-            margin-top: auto;
-            padding-bottom: 25px;
-            font-family: var(--font-heading);
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            font-style: italic;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
         @media (max-width: 600px) {
-            h1 { font-size: 2.4rem; }
-            .slideshow-viewport { height: 350px; }
-            .btn { padding: 8px 14px; font-size: 0.75rem; }
+            .slideshow-wrapper { height: 50vh; }
+            .nav-btn { padding: 6px 12px; font-size: 1.4rem; }
+            .grid-wrapper { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Header -->
-        <header>
-            <a href="index.html" class="back-link">← Back to Home</a>
-            <h1>Photo Gallery</h1>
-        </header>
-
-        <!-- Main Slideshow Card -->
-        <div class="slideshow-card">
-            <div class="slideshow-viewport">
-                <img id="mainImage" class="slide-img active" src="" alt="Wedding Photo">
-            </div>
-
-            <!-- Slideshow Controls -->
-            <div class="controls">
-                <button class="btn" id="prevBtn">‹ Prev</button>
-                <button class="btn" id="pauseBtn">Pause</button>
-                <button class="btn" id="nextBtn">Next ›</button>
-            </div>
-            <div class="counter" id="photoCounter">1 / 81</div>
-
-            <!-- Thumbnails Strip -->
-            <div class="thumb-strip" id="thumbStrip"></div>
+    <header>
+        <h1>Our Memories</h1>
+        <div class="controls">
+            <button class="btn active" id="slideshowViewBtn">Slideshow</button>
+            <button class="btn" id="gridViewBtn">Grid View</button>
+            <button class="btn" id="autoplayBtn">Pause Autoplay</button>
         </div>
+    </header>
 
-        <footer>
-            <p>Gina & Justin — October 10, 2026</p>
-        </footer>
+    <!-- Slideshow View -->
+    <div class="slideshow-wrapper" id="slideshowContainer">
+        <button class="nav-btn prev" id="prevBtn">&#10094;</button>
+        <img src="" id="currentSlide" class="slide-img active" alt="Gallery Photo">
+        <button class="nav-btn next" id="nextBtn">&#10095;</button>
+        <div class="counter" id="slideCounter">1 / 1</div>
     </div>
 
+    <!-- Grid View -->
+    <div class="grid-wrapper" id="gridContainer"></div>
+
     <script>
-        const TOTAL_PHOTOS = 81;
-        const BASE_URL = 'https://htijohnson.github.io/wedding/photos/';
-        const INTERVAL_MS = 3000; // 3 seconds
+        // List your photo file names here (matching your photos directory)
+        const photoFiles = [
+            '1.jpg',
+            '2.jpg',
+            '3.jpg',
+            '4.jpg',
+            '5.jpg',
+            '6.jpg'
+        ];
 
-        let currentIndex = 1;
-        let isPlaying = true;
-        let slideTimer = null;
+        let currentIndex = 0;
+        let autoplayInterval = null;
+        let isAutoplay = true;
 
-        const mainImage = document.getElementById('mainImage');
+        // Elements
+        const currentSlide = document.getElementById('currentSlide');
+        const slideCounter = document.getElementById('slideCounter');
+        const slideshowContainer = document.getElementById('slideshowContainer');
+        const gridContainer = document.getElementById('gridContainer');
+        const slideshowViewBtn = document.getElementById('slideshowViewBtn');
+        const gridViewBtn = document.getElementById('gridViewBtn');
+        const autoplayBtn = document.getElementById('autoplayBtn');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
-        const pauseBtn = document.getElementById('pauseBtn');
-        const counter = document.getElementById('photoCounter');
-        const thumbStrip = document.getElementById('thumbStrip');
 
-        // Pad numbers to 2 digits (e.g. 1 -> "01", 12 -> "12")
-        function formatNumber(num) {
-            return num.toString().padStart(2, '0');
-        }
-
-        // Build array of image filenames with support for .gif on 79 & 80
-        function getPhotoUrl(index) {
-            const ext = (index === 79 || index === 80) ? 'gif' : 'jpg';
-            return `${BASE_URL}${formatNumber(index)}.${ext}`;
-        }
-
-        // Initialize Thumbnails Strip
-        function initThumbnails() {
-            for (let i = 1; i <= TOTAL_PHOTOS; i++) {
-                const thumb = document.createElement('img');
-                thumb.src = getPhotoUrl(i);
-                thumb.className = 'thumb-img' + (i === 1 ? ' active' : '');
-                thumb.alt = `Thumbnail ${i}`;
-                thumb.dataset.index = i;
-                thumb.addEventListener('click', () => {
-                    goToSlide(i);
-                    resetTimer();
-                });
-                thumbStrip.appendChild(thumb);
-            }
-        }
-
-        // Update the displayed photo
-        function updateSlide() {
-            mainImage.classList.remove('active');
-
-            setTimeout(() => {
-                mainImage.src = getPhotoUrl(currentIndex);
-                mainImage.classList.add('active');
-            }, 150);
-
-            // Update Counter Text
-            counter.innerText = `${currentIndex} / ${TOTAL_PHOTOS}`;
-
-            // Update Active Thumbnail & Scroll into view
-            const thumbs = thumbStrip.querySelectorAll('.thumb-img');
-            thumbs.forEach((thumb, idx) => {
-                if (idx + 1 === currentIndex) {
-                    thumb.classList.add('active');
-                    thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                } else {
-                    thumb.classList.remove('active');
-                }
+        // Populate Grid
+        photoFiles.forEach((file, idx) => {
+            const img = document.createElement('img');
+            img.src = file;
+            img.alt = `Photo ${idx + 1}`;
+            img.addEventListener('click', () => {
+                showSlide(idx);
+                switchToSlideshow();
             });
+            gridContainer.appendChild(img);
+        });
+
+        function showSlide(index) {
+            if (index < 0) {
+                currentIndex = photoFiles.length - 1;
+            } else if (index >= photoFiles.length) {
+                currentIndex = 0;
+            } else {
+                currentIndex = index;
+            }
+
+            // Crossfade transition
+            currentSlide.classList.remove('active');
+            setTimeout(() => {
+                currentSlide.src = photoFiles[currentIndex];
+                currentSlide.classList.add('active');
+                slideCounter.innerText = `${currentIndex + 1} / ${photoFiles.length}`;
+            }, 150);
         }
 
         function nextSlide() {
-            currentIndex = (currentIndex % TOTAL_PHOTOS) + 1;
-            updateSlide();
+            showSlide(currentIndex + 1);
         }
 
         function prevSlide() {
-            currentIndex = (currentIndex - 2 + TOTAL_PHOTOS) % TOTAL_PHOTOS + 1;
-            updateSlide();
+            showSlide(currentIndex - 1);
         }
 
-        function goToSlide(index) {
-            currentIndex = index;
-            updateSlide();
-        }
-
-        function startSlideshow() {
-            if (!slideTimer) {
-                slideTimer = setInterval(nextSlide, INTERVAL_MS);
-            }
-            isPlaying = true;
-            pauseBtn.innerText = 'Pause';
-        }
-
-        function stopSlideshow() {
-            if (slideTimer) {
-                clearInterval(slideTimer);
-                slideTimer = null;
-            }
-            isPlaying = false;
-            pauseBtn.innerText = 'Play';
-        }
-
-        function togglePlayPause() {
-            if (isPlaying) {
-                stopSlideshow();
-            } else {
-                startSlideshow();
+        function startAutoplay() {
+            if (!autoplayInterval) {
+                autoplayInterval = setInterval(nextSlide, 3500); // 3.5 sec per slide
+                autoplayBtn.innerText = 'Pause Autoplay';
+                isAutoplay = true;
             }
         }
 
-        function resetTimer() {
-            if (isPlaying) {
-                clearInterval(slideTimer);
-                slideTimer = setInterval(nextSlide, INTERVAL_MS);
-            }
+        function stopAutoplay() {
+            clearInterval(autoplayInterval);
+            autoplayInterval = null;
+            autoplayBtn.innerText = 'Play Autoplay';
+            isAutoplay = false;
+        }
+
+        function switchToSlideshow() {
+            slideshowContainer.style.display = 'flex';
+            gridContainer.style.display = 'none';
+            slideshowViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
+        }
+
+        function switchToGrid() {
+            slideshowContainer.style.display = 'none';
+            gridContainer.style.display = 'grid';
+            gridViewBtn.classList.add('active');
+            slideshowViewBtn.classList.remove('active');
         }
 
         // Event Listeners
-        nextBtn.addEventListener('click', () => {
-            nextSlide();
-            resetTimer();
-        });
+        nextBtn.addEventListener('click', () => { nextSlide(); if (isAutoplay) startAutoplay(); });
+        prevBtn.addEventListener('click', () => { prevSlide(); if (isAutoplay) startAutoplay(); });
 
-        prevBtn.addEventListener('click', () => {
-            prevSlide();
-            resetTimer();
-        });
-
-        pauseBtn.addEventListener('click', togglePlayPause);
-
-        // Keyboard Arrow Navigation
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight') {
-                nextSlide();
-                resetTimer();
-            } else if (e.key === 'ArrowLeft') {
-                prevSlide();
-                resetTimer();
-            } else if (e.key === ' ') { // Spacebar to Pause/Play
-                e.preventDefault();
-                togglePlayPause();
+        autoplayBtn.addEventListener('click', () => {
+            if (isAutoplay) {
+                stopAutoplay();
+            } else {
+                startAutoplay();
             }
         });
 
-        // Initialize on load
-        initThumbnails();
-        updateSlide();
-        startSlideshow();
-    </script>
+        slideshowViewBtn.addEventListener('click', switchToSlideshow);
+        gridViewBtn.addEventListener('click', switchToGrid);
 
+        // Initialize
+        showSlide(0);
+        startAutoplay();
+    </script>
 </body>
 </html>
