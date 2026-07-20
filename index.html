@@ -1,4 +1,4 @@
-<!DOCTYPE html >
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,12 +12,11 @@
 
     <style>
         :root {
-            --bg-color: #fdfbf7;
-            --card-bg: #ffffff;
-            --text-main: #333333;
-            --text-muted: #666666;
-            --accent: #b89868;
-            --accent-hover: #9c7f53;
+            --card-bg: rgba(20, 20, 20, 0.65); /* Frosted glass dark background */
+            --text-main: #ffffff;
+            --text-muted: #e0e0e0;
+            --accent: #e5c188; /* Warm gold for visibility against dark backgrounds */
+            --accent-hover: #d4a96a;
             --font-heading: 'Cormorant Garamond', serif;
             --font-body: 'Montserrat', sans-serif;
         }
@@ -29,13 +28,17 @@
         }
 
         body {
-            background-color: var(--bg-color);
+            /* Full page background image with dark overlay */
+            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.65)), 
+                        url('https://htijohnson.github.io/wedding/gj.png') no-repeat center center fixed;
+            background-size: cover;
             color: var(--text-main);
             font-family: var(--font-body);
             line-height: 1.6;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
             padding: 20px;
         }
 
@@ -50,10 +53,11 @@
         header {
             margin-top: 40px;
             margin-bottom: 30px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.7);
         }
 
         .sub-title {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             letter-spacing: 4px;
             text-transform: uppercase;
             color: var(--accent);
@@ -63,47 +67,28 @@
 
         h1 {
             font-family: var(--font-heading);
-            font-size: 3.5rem;
+            font-size: 3.8rem;
             font-weight: 400;
-            color: #222;
+            color: #ffffff;
             letter-spacing: 1px;
             line-height: 1.2;
         }
 
         .date-location {
             font-family: var(--font-heading);
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             font-style: italic;
             color: var(--text-muted);
             margin-top: 10px;
-        }
-
-        /* Image Wrapper */
-        .image-container {
-            margin: 30px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .hero-img {
-            max-width: 100%;
-            height: auto;
-            max-height: 450px;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(184, 152, 104, 0.2);
-            padding: 8px;
-            background: #fff;
-            object-fit: cover;
         }
 
         .divider {
             width: 60px;
             height: 1px;
             background-color: var(--accent);
-            margin: 40px auto;
-            opacity: 0.6;
+            margin: 30px auto 40px auto;
+            opacity: 0.8;
+            box-shadow: 0 0 8px rgba(229, 193, 136, 0.5);
         }
 
         /* Details Grid */
@@ -116,10 +101,12 @@
 
         .card {
             background-color: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: 30px 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            border: 1px solid rgba(0,0,0,0.03);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .card h3 {
@@ -135,30 +122,35 @@
             color: var(--text-muted);
         }
 
-        /* RSVP Form */
+        /* RSVP Form & Confirmation Card */
         .rsvp-section {
             background-color: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: 40px 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             margin-bottom: 50px;
+            transition: all 0.4s ease;
         }
 
         .rsvp-section h2 {
             font-family: var(--font-heading);
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             margin-bottom: 10px;
             font-weight: 400;
+            color: #ffffff;
         }
 
         .rsvp-section p {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--text-muted);
             margin-bottom: 25px;
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             text-align: left;
         }
 
@@ -167,28 +159,34 @@
             font-size: 0.8rem;
             letter-spacing: 1px;
             text-transform: uppercase;
-            margin-bottom: 5px;
-            color: var(--text-main);
+            margin-bottom: 6px;
+            color: var(--accent);
+            font-weight: 500;
         }
 
         input, select {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #222;
             border-radius: 6px;
             font-family: var(--font-body);
             font-size: 0.95rem;
             outline: none;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         input:focus, select:focus {
             border-color: var(--accent);
+            box-shadow: 0 0 8px rgba(229, 193, 136, 0.5);
+            background-color: #ffffff;
         }
 
         button.btn {
             background-color: var(--accent);
-            color: #ffffff;
+            color: #111111;
+            font-weight: 600;
             border: none;
             padding: 14px 35px;
             font-family: var(--font-body);
@@ -197,13 +195,14 @@
             text-transform: uppercase;
             border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.1s ease;
             margin-top: 10px;
             width: 100%;
         }
 
         button.btn:hover {
             background-color: var(--accent-hover);
+            transform: translateY(-1px);
         }
 
         .status-message {
@@ -213,18 +212,58 @@
             display: none;
         }
 
+        /* Confirmation State Styles */
+        .confirmation-box {
+            display: none;
+            padding: 20px 10px;
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+
+        .confirmation-box h3 {
+            font-family: var(--font-heading);
+            font-size: 2.6rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .confirmation-box p {
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .confirmation-details {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            border: 1px dashed var(--accent);
+        }
+
+        .confirmation-details strong {
+            color: #ffffff;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         footer {
             margin-top: auto;
             padding-bottom: 30px;
             font-family: var(--font-heading);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-muted);
             font-style: italic;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
         @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
-            .hero-img { max-height: 320px; }
+            h1 { font-size: 2.8rem; }
             .rsvp-section { padding: 25px 15px; }
         }
     </style>
@@ -238,11 +277,6 @@
             <h1>Gina & Justin</h1>
             <p class="date-location">October 10, 2026</p>
         </header>
-
-        <!-- Centered Main Image -->
-        <div class="image-container">
-            <img src="https://htijohnson.github.io/wedding/gj.png" alt="Gina and Justin" class="hero-img">
-        </div>
 
         <div class="divider"></div>
 
@@ -260,34 +294,47 @@
             </div>
         </div>
 
-        <!-- RSVP Form -->
-        <div class="rsvp-section">
-            <h2>RSVP</h2>
-            <p>Please kindly respond by September 10, 2026</p>
+        <!-- RSVP Form Section -->
+        <div class="rsvp-section" id="rsvpSection">
+            <div id="rsvpFormContainer">
+                <h2>RSVP</h2>
+                <p>Please kindly respond by September 10, 2026</p>
 
-            <form id="rsvpForm">
-                <div class="form-group">
-                    <label for="fullname">Full Name</label>
-                    <input type="text" id="fullname" name="fullname" placeholder="e.g. Jane Doe" required>
+                <form id="rsvpForm">
+                    <div class="form-group">
+                        <label for="fullname">Full Name</label>
+                        <input type="text" id="fullname" name="fullname" placeholder="e.g. Jane Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="attendance">Will you be attending?</label>
+                        <select id="attendance" name="attendance" required>
+                            <option value="" disabled selected>Select an option</option>
+                            <option value="Joyfully Accepts">Joyfully Accepts</option>
+                            <option value="Regretfully Declines">Regretfully Declines</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="guestCount">Total Number of Guests in Party</label>
+                        <input type="number" id="guestCount" name="guestCount" min="1" max="10" value="1" required>
+                    </div>
+
+                    <button type="submit" class="btn" id="submitBtn">Send RSVP</button>
+                    <div id="statusMessage" class="status-message">Sending your RSVP...</div>
+                </form>
+            </div>
+
+            <!-- Confirmation Message (Hidden by default) -->
+            <div id="confirmationBox" class="confirmation-box">
+                <h3>RSVP Received!</h3>
+                <p>Thank you so much for taking the time to respond.</p>
+                <div class="confirmation-details">
+                    <p><strong>Submitted For:</strong> <span id="confirmName"></span></p>
+                    <p><strong>Status:</strong> <span id="confirmStatus"></span></p>
+                    <p><strong>Party Size:</strong> <span id="confirmCount"></span></p>
                 </div>
-
-                <div class="form-group">
-                    <label for="attendance">Will you be attending?</label>
-                    <select id="attendance" name="attendance" required>
-                        <option value="" disabled selected>Select an option</option>
-                        <option value="Joyfully Accepts">Joyfully Accepts</option>
-                        <option value="Regretfully Declines">Regretfully Declines</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="guestCount">Total Number of Guests in Party</label>
-                    <input type="number" id="guestCount" name="guestCount" min="1" max="10" value="1" required>
-                </div>
-
-                <button type="submit" class="btn" id="submitBtn">Send RSVP</button>
-                <div id="statusMessage" class="status-message">Sending your RSVP...</div>
-            </form>
+            </div>
         </div>
 
         <!-- Footer -->
@@ -297,10 +344,11 @@
     </div>
 
     <script>
-        // Replace with your Web App URL from Google Apps Script
-        const GOOGLE_SHEET_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+        const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzic-I5h6K07tPJ3ZwyWbZ9pJD4JwOkWjvFGzAeiN-Juw6g02WomTCLV9-SHpRh/exec';
 
         const form = document.getElementById('rsvpForm');
+        const formContainer = document.getElementById('rsvpFormContainer');
+        const confirmationBox = document.getElementById('confirmationBox');
         const submitBtn = document.getElementById('submitBtn');
         const statusMsg = document.getElementById('statusMessage');
 
@@ -309,25 +357,38 @@
             
             submitBtn.disabled = true;
             statusMsg.style.display = 'block';
+            statusMsg.style.color = 'var(--accent)';
             statusMsg.innerText = 'Sending your RSVP...';
 
             const formData = new FormData(form);
+            const fullNameVal = document.getElementById('fullname').value;
+            const attendanceVal = document.getElementById('attendance').value;
+            const guestCountVal = document.getElementById('guestCount').value;
 
             fetch(GOOGLE_SHEET_URL, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                mode: 'no-cors'
             })
-            .then(response => {
-                statusMsg.innerText = 'Thank you! Your RSVP has been submitted.';
-                form.reset();
-                submitBtn.disabled = false;
+            .then(() => {
+                showConfirmation(fullNameVal, attendanceVal, guestCountVal);
             })
             .catch(error => {
-                statusMsg.innerText = 'Thank you! Your RSVP has been submitted.';
-                form.reset();
+                console.error('RSVP Error:', error);
+                statusMsg.style.color = '#ff6b6b';
+                statusMsg.innerText = 'Unable to send RSVP. Please check your internet connection and try again.';
                 submitBtn.disabled = false;
             });
         });
+
+        function showConfirmation(name, status, count) {
+            document.getElementById('confirmName').innerText = name;
+            document.getElementById('confirmStatus').innerText = status;
+            document.getElementById('confirmCount').innerText = count + (count == 1 ? ' Person' : ' People');
+
+            formContainer.style.display = 'none';
+            confirmationBox.style.display = 'block';
+        }
     </script>
 
 </body>
