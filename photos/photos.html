@@ -91,7 +91,7 @@
             background: #000;
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 25, 0.15);
             box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
@@ -196,7 +196,7 @@
 <body>
 
     <header>
-        <h1>Our Engagement</h1>
+        <h1>Our Memories</h1>
         <div class="controls">
             <button class="btn active" id="slideshowViewBtn">Slideshow</button>
             <button class="btn" id="gridViewBtn">Grid View</button>
@@ -208,7 +208,7 @@
         <button class="nav-btn prev" id="prevBtn">&#10094;</button>
         <img src="" id="currentSlide" class="slide-img active" alt="Gallery Photo">
         <button class="nav-btn next" id="nextBtn">&#10095;</button>
-        <div class="counter" id="slideCounter">1 / 81</div>
+        <div class="counter" id="slideCounter">1 / 79</div>
     </div>
 
     <div class="grid-wrapper" id="gridContainer"></div>
@@ -220,13 +220,14 @@
     <script>
         const BASE_URL = 'https://ginajustin.wedding/photos/';
 
-        // Generate paths: padded 2-digit numbers, setting .gif for 79 and 80
-        const photoFiles = Array.from({ length: 81 }, (_, i) => {
-            const num = i + 1;
-            const paddedNum = String(num).padStart(2, '0');
-            const ext = (num === 79 || num === 80) ? 'gif' : 'jpg';
-            return `${BASE_URL}${paddedNum}.${ext}`;
-        });
+        // Generate paths: padded 2-digit numbers (1–81, skipping 65 and 68)
+        const photoFiles = Array.from({ length: 81 }, (_, i) => i + 1)
+            .filter(num => num !== 65 && num !== 68)
+            .map(num => {
+                const paddedNum = String(num).padStart(2, '0');
+                const ext = (num === 79 || num === 80) ? 'gif' : 'jpg';
+                return `${BASE_URL}${paddedNum}.${ext}`;
+            });
 
         let currentIndex = 0;
         let autoplayInterval = null;
