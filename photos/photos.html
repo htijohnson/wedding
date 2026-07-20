@@ -195,8 +195,15 @@
     <div class="grid-wrapper" id="gridContainer"></div>
 
     <script>
-        // Automatically generate paths for 81 photos (1.jpg to 81.jpg)
-        const photoFiles = Array.from({ length: 81 }, (_, i) => `${i + 1}.jpg`);
+        const BASE_URL = 'https://ginajustin.wedding/photos/';
+
+        // Generate paths: padded 2-digit numbers, setting .gif for 79 and 80
+        const photoFiles = Array.from({ length: 81 }, (_, i) => {
+            const num = i + 1;
+            const paddedNum = String(num).padStart(2, '0');
+            const ext = (num === 79 || num === 80) ? 'gif' : 'jpg';
+            return `${BASE_URL}${paddedNum}.${ext}`;
+        });
 
         let currentIndex = 0;
         let autoplayInterval = null;
@@ -217,7 +224,7 @@
             const img = document.createElement('img');
             img.src = file;
             img.alt = `Photo ${idx + 1}`;
-            img.loading = "lazy"; // Prevents lag loading all 81 images at once
+            img.loading = "lazy";
             img.addEventListener('click', () => {
                 showSlide(idx);
                 switchToSlideshow();
