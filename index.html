@@ -423,6 +423,14 @@
             border-bottom: 1px solid var(--accent);
         }
 
+        .report-table tfoot td {
+            font-weight: bold;
+            color: var(--accent);
+            border-top: 2px solid var(--accent);
+            border-bottom: none;
+            background-color: rgba(15, 10, 11, 0.3);
+        }
+
         .status-badge {
             display: inline-block;
             padding: 2px 8px;
@@ -559,7 +567,7 @@
             </div>
             <div class="card">
                 <h3>Food</h3>
-                <p>Food Catered by Hawaiian Island Grill</p>
+                <p>Food from Hawaiian Island Grill</p>
             </div>
         </div>
 
@@ -646,6 +654,13 @@
                         <tbody id="reportTableBody">
                             <!-- Dynamically populated -->
                         </tbody>
+                        <tfoot id="reportTableFooter">
+                            <tr>
+                                <td colspan="2">TOTALS</td>
+                                <td id="totalAdultsCell">0</td>
+                                <td id="totalChildrenCell">0</td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             </div>
@@ -782,6 +797,8 @@
         const totalAttendingCount = document.getElementById('totalAttendingCount');
         const totalDecliningCount = document.getElementById('totalDecliningCount');
         const totalResponsesCount = document.getElementById('totalResponsesCount');
+        const totalAdultsCell = document.getElementById('totalAdultsCell');
+        const totalChildrenCell = document.getElementById('totalChildrenCell');
 
         let isReportUnlocked = false;
 
@@ -812,9 +829,13 @@
                         totalAttendingCount.innerText = '0';
                         totalDecliningCount.innerText = '0';
                         totalResponsesCount.innerText = '0';
+                        totalAdultsCell.innerText = '0';
+                        totalChildrenCell.innerText = '0';
                     } else {
                         let totalAttendingGuests = 0;
                         let decliningResponses = 0;
+                        let totalAdultsSum = 0;
+                        let totalChildrenSum = 0;
                         let tableRowsHTML = '';
 
                         data.forEach(row => {
@@ -827,6 +848,8 @@
                             
                             if (isAccepting) {
                                 totalAttendingGuests += (adults + children);
+                                totalAdultsSum += adults;
+                                totalChildrenSum += children;
                             } else {
                                 decliningResponses++;
                             }
@@ -847,6 +870,8 @@
                         totalAttendingCount.innerText = totalAttendingGuests;
                         totalDecliningCount.innerText = decliningResponses;
                         totalResponsesCount.innerText = data.length;
+                        totalAdultsCell.innerText = totalAdultsSum;
+                        totalChildrenCell.innerText = totalChildrenSum;
                     }
 
                     reportContainer.style.display = 'block';
